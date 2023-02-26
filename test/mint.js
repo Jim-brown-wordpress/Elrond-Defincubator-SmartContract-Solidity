@@ -104,7 +104,7 @@ describe("DefincubatorReward Token Contract" , function(){
         // }
 
 
-
+        console.log('x');
 
     });
 
