@@ -217,38 +217,76 @@ contract DefincubatorReward{
             //<!--- Infinity reward ---->
 
 
-            uint256 nPromoter1 = 0;
-            uint256 nPromoter2 = 0;
-            for(uint256 i = 0 ; i< nPerson; i++) {
-                if(persons[addresses[i]].superPromoterLevel == 1){
-                    if(block.timestamp - persons[addresses[i]].getQAt <= promoter1Q_time * 4 weeks )
-                        nPromoter1++;
-                    else
-                       persons[addresses[i]].superPromoterLevel = 0;
-                }
-                if(persons[addresses[i]].superPromoterLevel == 2){
-                    if(block.timestamp - persons[addresses[i]].getQAt <= promoter2Q_time * 4 weeks)
-                        nPromoter2++;
-                    else
-                        persons[addresses[i]].superPromoterLevel = 0;
-                }
-            }
+            // uint256 nPromoter1 = 0;
+            // uint256 nPromoter2 = 0;
+            // for(uint256 i = 0 ; i< nPerson; i++) {
+            //     if(persons[addresses[i]].superPromoterLevel == 1){
+            //         if(block.timestamp - persons[addresses[i]].getQAt <= promoter1Q_time * 4 weeks )
+            //             nPromoter1++;
+            //         else
+            //            persons[addresses[i]].superPromoterLevel = 0;
+            //     }
+            //     if(persons[addresses[i]].superPromoterLevel == 2){
+            //         if(block.timestamp - persons[addresses[i]].getQAt <= promoter2Q_time * 4 weeks)
+            //             nPromoter2++;
+            //         else
+            //             persons[addresses[i]].superPromoterLevel = 0;
+            //     }
+            // }
 
-            if(nPromoter1 > 0){
-                for(uint256 i = 0 ; i< nPerson; i++) {
-                    if(persons[addresses[i]].superPromoterLevel == 1){
-                        IERC20(BusdContractAddress).transfer(addresses[i], msg.value * promoter1Rate / nPromoter1 / 10000 );
+            // if(nPromoter1 > 0){
+            //     for(uint256 i = 0 ; i< nPerson; i++) {
+            //         if(persons[addresses[i]].superPromoterLevel == 1){
+            //             IERC20(BusdContractAddress).transfer(addresses[i], msg.value * promoter1Rate / nPromoter1 / 10000 );
 
+            //         }
+            //     }
+            // }
+            // if(nPromoter2 > 0){
+            //     for(uint256 i = 0 ; i< nPerson; i++) {
+            //         if(persons[addresses[i]].superPromoterLevel == 2){
+            //             IERC20(BusdContractAddress).transfer(addresses[i], msg.value * promoter2Rate / nPromoter2 / 10000 );
+
+            //         }
+            //     }
+            // }
+
+
+
+            parent = owner;
+            bool promoter1Paid = false;
+            bool promoter2Paid = false;
+            while(true){
+                parent = invitedBy[parent];
+                if(parent == address(0))
+                    break;
+                if(persons[parent].superPromoterLevel == 1){
+                    if(block.timestamp - persons[parent].getQAt <= promoter1Q_time * 4 weeks){
+                        if(!promoter1Paid){
+                            IERC20(BusdContractAddress).transfer(parent, msg.value * promoter1Rate / 10000 );
+                            promoter1Paid = true;
+
+                            remaingRewardRate -= promoter1Rate ;
+                        }
+                    }
+                    else {
+                        persons[parent].superPromoterLevel = 0;
                     }
                 }
-            }
-            if(nPromoter2 > 0){
-                for(uint256 i = 0 ; i< nPerson; i++) {
-                    if(persons[addresses[i]].superPromoterLevel == 2){
-                        IERC20(BusdContractAddress).transfer(addresses[i], msg.value * promoter2Rate / nPromoter2 / 10000 );
+                if(persons[parent].superPromoterLevel == 2){
+                    if(block.timestamp - persons[parent].getQAt <= promoter2Q_time * 4 weeks){
+                        if(!promoter2Paid){
+                            IERC20(BusdContractAddress).transfer(parent, msg.value * promoter2Rate / 10000 );
+                            promoter2Paid = true;
 
+                            remaingRewardRate -= promoter2Rate ;
+                        }
+                    }
+                    else {
+                        persons[parent].superPromoterLevel = 0;
                     }
                 }
+
             }
 
             // <! ----------- Making Superpromoter ----------------
@@ -292,7 +330,6 @@ contract DefincubatorReward{
 
             // <!--- Reminaing reward --->
 
-            remaingRewardRate -= (promoter1Rate + promoter2Rate);
 
             IERC20(BusdContractAddress).transfer(contractOwner, msg.value * remaingRewardRate / 10000 );
 
