@@ -304,7 +304,6 @@ contract DefincubatorReward{
         ) external {
 
             require(invitedBy[invitedPerson] != msg.sender , "can't set him as invited Person");
-            require(persons[invitedPerson].ownedBoxLastIndex > 0 || invitedPerson == contractOwner , "only owned at least one collection can invite you");
 
             addresses[nPerson++] = msg.sender;
             uint256[] memory earnedRewardBoxAt = new uint256[](nCollection + 1);
@@ -364,57 +363,6 @@ contract DefincubatorReward{
         person.lastClaimedAt = person.lastClaimedAt + nweeks * 1 weeks;
     }
 
-    // function claimPerformacePoolReward() external {
-    //     (uint year , uint month, ) =  BokkyPooBahsDateTimeLibrary.timestampToDate(block.timestamp);
-
-
-    //          address parent = msg.sender;
-    //         if(curYear == year && curMonth == month) {
-    //             for(uint i = 0 ;i < generations; i++){
-    //                 parent = invitedBy[parent];
-    //                 if(parent == address(0))
-    //                     break;
-    //                 persons[parent].poolRewardAccumulated += rewardBoxPrice[collectionIndex];
-    //                 if(persons[parent].poolRewardAccumulated >= poolQ_price)
-    //                     persons[parent].hasPoolQualification = true;
-
-    //             }
-    //         }
-    //         else{
-    //             curYear = year;
-    //             curMonth = month;
-    //             bool flag = true;
-    //             for(uint i = 0; i< nPerson ; i++) {
-    //                 if(flag && persons[addresses[i]].poolRewardAccumulated >= poolQ_price){
-    //                     //
-    //                     //
-    //                     //
-    //                     //
-    //                     //  All performance Qualified people should get reward in this part
-    //                     uint256 nQualifiedPeople = 0;
-    //                     for(uint256 j = 0 ; j< nPerson; j++) {
-    //                         if(persons[addresses[j]].poolRewardAccumulated >= poolQ_price)
-    //                             nQualifiedPeople++;
-    //                     }
-    //                     if(nQualifiedPeople > 0){
-    //                         uint256 balance = IERC20(BusdContractAddress).balanceOf(performancePoolAddress);
-    //                         for(uint256 j = 0 ; j< nPerson; j++) {
-    //                             if(persons[addresses[j]].poolRewardAccumulated >= poolQ_price)
-    //                                 IERC20(BusdContractAddress).transferFrom(performancePoolAddress , addresses[j], balance / nQualifiedPeople );
-
-    //                         }
-    //                     }
-    //                     //
-    //                     //
-    //                     //
-    //                     //
-    //                     //
-    //                     flag = false;
-    //                 }
-    //                 persons[addresses[i]].poolRewardAccumulated = 0;
-    //             }
-    //         }
-    // }
     //each user should call this function on first day of month.
     // function claminPoolReward() external {
 

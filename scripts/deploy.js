@@ -1,11 +1,11 @@
 const { ethers } = require("hardhat")
 
 const main = async () => {
-    const DefincubatorNFT = await ethers.getContractFactory("DefincubatorNFT");
-    const defincubatorNFT = await DefincubatorNFT.deploy("DefincubatorNFT" , "Def");
-    defincubatorNFT.deployed();
+    const DefincubatorReward = await ethers.getContractFactory("DefincubatorReward");
+    const defincubatorReward = await DefincubatorReward.deploy();
+    defincubatorReward.deployed();
 
-    console.log("Contract is deployed to:" , defincubatorNFT.address);
+    console.log("Contract is deployed to:" , defincubatorReward.address);
 }
 
 

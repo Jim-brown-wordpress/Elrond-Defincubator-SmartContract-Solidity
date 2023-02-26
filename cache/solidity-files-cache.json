@@ -582,8 +582,8 @@
       ]
     },
     "F:\\DEV\\Project\\blockchain\\AAA\\contracts\\DefincubatorReward.sol": {
-      "lastModificationDate": 1675527509537,
-      "contentHash": "92b576dd3cd26f21d6bc8f5ca2c9e691",
+      "lastModificationDate": 1677214381427,
+      "contentHash": "7f17942c707a9848752c6a4795fe38a4",
       "sourceName": "contracts/DefincubatorReward.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -698,8 +698,8 @@
       ]
     },
     "F:\\DEV\\Project\\blockchain\\AAA\\contracts\\Token.sol": {
-      "lastModificationDate": 1675514271272,
-      "contentHash": "d9470b3ffb330789671d64bb67126d40",
+      "lastModificationDate": 1675645217717,
+      "contentHash": "c31245c6ce54b8e937869222dd672f7a",
       "sourceName": "contracts/Token.sol",
       "solcConfig": {
         "version": "0.8.17",
