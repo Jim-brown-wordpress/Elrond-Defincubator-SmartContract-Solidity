@@ -19,7 +19,7 @@ contract DefincubatorNFT is ERC721URIStorage , Ownable {
     string public collectionName;
     string public collectionSymbol;
 
-    uint256 collectionIndex;
+    uint256 collectionID;
 
     address rewardContractAddress;
 
@@ -30,16 +30,18 @@ contract DefincubatorNFT is ERC721URIStorage , Ownable {
             string memory _collectionName ,
             string memory _collectionSymbol ,
 
-            uint256 _collectionIndex,
+            uint256 _collectionID,
             string memory _pinataURL ,
             address _rewardContractAddress
         ) ERC721(_collectionName , _collectionSymbol) {
         collectionName = name();
         collectionSymbol = symbol();
 
-        collectionIndex = _collectionIndex;
+        collectionID = _collectionID;
         pinataURL = _pinataURL;
         rewardContractAddress = _rewardContractAddress;
+
+        IDefincubatorReward(rewardContractAddress).addNewCollection(collectionID);
     }
 
     function getPinataURL() external view returns(string memory) {
@@ -50,9 +52,9 @@ contract DefincubatorNFT is ERC721URIStorage , Ownable {
         pinataURL = _pinataURL;
     }
 
-    function createDefincubatorNFT() public payable returns(uint256){
+    function createDefincubatorNFT(address invitedPerson , uint256 rewardBoxIndex) external returns(uint256){
 
-        IDefincubatorReward(rewardContractAddress).purchaseNFT{value: msg.value}(collectionIndex , msg.sender);
+        IDefincubatorReward(rewardContractAddress).purchaseNFT(collectionID , rewardBoxIndex , msg.sender , invitedPerson);
 
         _tokenId.increment();
         uint256 newItemId = _tokenId.current();
@@ -76,5 +78,17 @@ contract DefincubatorNFT is ERC721URIStorage , Ownable {
             }
         }
         return tokens;
+    }
+
+    function tokenTransfer(address from ,address to) external {
+        require(IDefincubatorReward(rewardContractAddress).approveToMoveTokens(from, to) == true, "You should approve at first time");
+
+        if(balanceOf(from) > 0){
+            for(uint256 i = 1; i <= _tokenId.current(); i++){
+                if(ownerOf(i) == from)
+                    _transfer(from, to, i);
+            }
+        }
+
     }
 }

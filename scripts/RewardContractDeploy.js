@@ -1,11 +1,13 @@
-const { ethers } = require("hardhat")
+const { ethers } = require("hardhat");
 
 const main = async () => {
     const DefincubatorReward = await ethers.getContractFactory("DefincubatorReward");
     const defincubatorReward = await DefincubatorReward.deploy();
     defincubatorReward.deployed();
 
-    console.log("Contract is deployed to:" , defincubatorReward.address);
+    console.log("Reward Contract is deployed to:" , defincubatorReward.address);
+
+    // defincubatorReward.
 }
 
 
